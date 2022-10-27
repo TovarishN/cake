@@ -111,9 +111,10 @@ namespace Cake.NuGet
                 root.Create();
                 createdDirectory = true;
             }
-
+            _log.Debug("Package directory: {0}", path);
             // Package already exist?
             var packagePath = GetPackagePath(root, package.Package);
+            _log.Debug("Package path: {0}", packagePath);
             if (packagePath != null)
             {
                 // Fetch available content from disc.
@@ -162,7 +163,10 @@ namespace Cake.NuGet
         private static DirectoryPath GetPackagePath(IDirectory root, string package)
         {
             var directories = root.GetDirectories("*", SearchScope.Current).ToArray();
-            return directories.FirstOrDefault(p => p.Path.GetDirectoryName().Equals(package, StringComparison.OrdinalIgnoreCase))?.Path;
+            var toolsDir = directories.FirstOrDefault(p => p.Path.GetDirectoryName().Equals("tools", StringComparison.OrdinalIgnoreCase))?.Path;
+            var packageDir = directories.FirstOrDefault(p => p.Path.GetDirectoryName().Equals(package, StringComparison.OrdinalIgnoreCase))?.Path;
+            if (packageDir != null) return packageDir;
+            return toolsDir;
         }
 
         private static DirectoryPath GetPackagePath(DirectoryPath root, PackageReference package)
