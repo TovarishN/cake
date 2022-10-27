@@ -111,10 +111,10 @@ namespace Cake.NuGet
                 root.Create();
                 createdDirectory = true;
             }
-            _log.Debug("Package directory: {0}", path);
+            _log.Verbose("Package directory: {0}", path);
             // Package already exist?
             var packagePath = GetPackagePath(root, package.Package);
-            _log.Debug("Package path: {0}", packagePath);
+            _log.Verbose("Package path: {0}", packagePath);
             if (packagePath != null)
             {
                 // Fetch available content from disc.
@@ -138,6 +138,12 @@ namespace Cake.NuGet
                 }
             }
 
+            var directories = root.GetDirectories("*", SearchScope.Current).ToArray();
+            foreach (var directory in directories)
+            {
+                _log.Verbose(directory.Path.FullPath);
+            }
+            _log.Verbose("looking for {0}", package.Package);
             // Try locating the install folder again.
             packagePath = GetPackagePath(root, package.Package);
 
