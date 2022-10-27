@@ -165,7 +165,10 @@ namespace Cake.NuGet
             var directories = root.GetDirectories("*", SearchScope.Current).ToArray();
             var toolsDir = directories.FirstOrDefault(p => p.Path.GetDirectoryName().Equals("tools", StringComparison.OrdinalIgnoreCase))?.Path;
             var packageDir = directories.FirstOrDefault(p => p.Path.GetDirectoryName().Equals(package, StringComparison.OrdinalIgnoreCase))?.Path;
-            if (packageDir != null) return packageDir;
+            if (packageDir != null)
+            {
+                return packageDir;
+            }
             return toolsDir;
         }
 
